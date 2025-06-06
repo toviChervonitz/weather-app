@@ -1,9 +1,16 @@
 #root {
-  max-width: 1280px;
+  max-width: 100%;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  background-color: rgba(255, 255, 255, 0);
+  direction: rtl;
+  /* background-image: url('../image/c8ba30ee61944cc26dbde4022a0a4b72.gif');
+  background-repeat: no-repeat;
+  background-size: cover; */
+
 }
+
 
 .logo {
   height: 6em;
