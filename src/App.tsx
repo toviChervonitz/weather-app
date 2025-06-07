@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
 import './App.css'
-import { fetchWeathetData } from './services/weatherService';
+import { fetchWeatherData } from './services/weatherService';
 import Header from './components/Header';
 import WeatherCard from './components/WeatherCards';
 import type { WeatherDisplayData } from './models/weather';
-import { Box, Container, Typography, Alert } from '@mui/material';
-import Grid from '@mui/material/Grid';
+import { Box, Container, Typography, Alert} from '@mui/material';
 
 
 
@@ -21,7 +20,7 @@ function App() {
       setIsLoading(true);
       setError(null);
 
-      const data = await fetchWeathetData();
+      const data = await fetchWeatherData();
       setWeatherData(data);
       setLastUpdated(new Date());
     } catch (err) {
@@ -39,36 +38,56 @@ function App() {
     loadWeatherData();
   }, []);
 
+  const defaultWeather: WeatherDisplayData = {
+     name: '',
+    description: '',
+    temp: 0,
+    feels_like: 0,
+    humidity: 0,
+    country: '',
+    icon: '',
+    main: ''
+  };
+
+
   return (
     <Box sx={{ minHeight: '80vh', maxHeight:'100vh', py: 4 }}>
       <Container maxWidth={false}>
         <Header lastUpdated={lastUpdated || undefined} />
-
+  
         {error && (
           <Alert severity="error" sx={{ my: 3 }}>
             {error}
           </Alert>
         )}
-
+  
         {!error && (
-          <Grid container spacing={3} justifyContent="center" sx={{ mt: 2 }}>
-            {isLoading && weatherData.length === 0
-              ? Array.from({ length: 4 }).map((_, index) => (
-                <Grid item xs={12} sm={6} md={3} lg={3} key={index}>
-                  <WeatherCard weather={{} as WeatherDisplayData} isLoading />
-                </Grid>
-              ))
-              : weatherData.map((weather, index) => (
-                <Grid item xs={12} sm={6} md={3} lg={3} key={`${weather.name}-${index}`}>
-                  <WeatherCard weather={weather} />
-                </Grid>
-              ))}
-          </Grid>
+          <Box
+          display="flex"
+          flexWrap="wrap"
+          justifyContent="center"
+          gap={3}
+          sx={{ mt: 2 }}
+        >
+          {(isLoading ? Array.from({ length: 4 }) : weatherData).map((item, index) => {
+            const weather: WeatherDisplayData = !isLoading
+              ? (item as WeatherDisplayData)
+              : defaultWeather;
+        
+            return (
+              <Box key={index} sx={{ width: 300 }}>
+                <WeatherCard isLoading={isLoading} weather={weather} />
+              </Box>
+            );
+          })}
+        </Box>
         )}
-
+  
         {!error && weatherData.length === 0 && !isLoading && (
           <Box textAlign="center" mt={6}>
-            <Typography color="text.secondary">אין מידע זמין, נא לרענן את הדף.</Typography>
+            <Typography color="text.secondary">
+              אין מידע זמין, נא לרענן את הדף.
+            </Typography>
           </Box>
         )}
       </Container>

@@ -4,7 +4,7 @@ const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
 const BASE_URL = import.meta.env.VITE_OPENWEATHER_BASE_URL;
 const cities = ['Eilat' , 'London' , 'New York' , 'Alaska'];
 
-export const fetchWeathetData = async(): Promise<WeatherDisplayData[]> =>{
+export const fetchWeatherData = async(): Promise<WeatherDisplayData[]> =>{
     if(! API_KEY){
         throw new Error('OpenWeatherMap API key is required. Please add VITE_OPENWEATHER_API_KEY to your environment variables.');
     }
